@@ -1,0 +1,23 @@
+
+Firebase 
+RealTime 
+Fetch---Paste that link
+add name at the end of link plus add .json(must) with it
+
+
+const res = await fetch(
+          "https://reactform-b05f9-default-rtdb.firebaseio.com/reactform.json",
+          {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+              name,
+              email,
+              password,
+              cpassword,
+            }),
+          }
+        );
+
