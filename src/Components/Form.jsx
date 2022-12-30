@@ -25,6 +25,8 @@ import {
 import FIREBASE_API from "./API/Api";
 
 function Form() {
+  const userCollextionRef = collection(db , "user")
+
   const navigate = useNavigate();
 
   const [disabled, setdDisabled] = useState(false);
@@ -43,56 +45,110 @@ function Form() {
     setUser({ ...user, [name]: value });
   };
 
-  const postData = async (e) => {
-    e.preventDefault();
-    setdDisabled(true);
-    const { name, email, password, cpassword } = user;
 
-    if (name && email && password && cpassword) {
-      if (password === cpassword) {
-        const res = await fetch(`${FIREBASE_API}/reactform.json`, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            cpassword,
-          }),
-        });
+// -----------SIgn UP through FIRESTONE TO connect with CRUD APP
 
-        if (res) {
-          // setUser({
-          //   name: "",
-          //   email: "",
-          //   password: "",
-          //   cpassword: "",
-          // });
-          toastSuccess("User Registered");
 
-          setTimeout(() => {
-            navigate("/");
-          }, 2300);
-          // alert("Data Stored");
-          setdDisabled(false);
-        }
-      } else {
-        toastWarning("Passwords are not same ");
-        // alert("Password not same ");
+const postData = async (e) => {
+  e.preventDefault();
+  setdDisabled(true);
+  const { name, email, password, cpassword } = user;
+
+  if (name && email && password && cpassword) {
+    if (password === cpassword) {
+     let res =  await addDoc(userCollextionRef, {user})
+
+      if (res) {
+        toastSuccess("User Registered");
         setUser({
+          name: "",
+          email: "",
           password: "",
           cpassword: "",
         });
+       
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2300);
+        // alert("Data Stored");
         setdDisabled(false);
       }
     } else {
-      toastError("Filled All fields");
-      // alert();
+      toastWarning("Passwords are not same ");
+      // alert("Password not same ");
+      setUser({
+        password: "",
+        cpassword: "",
+      });
       setdDisabled(false);
     }
-  };
+  } else {
+    toastError("Filled All fields");
+    // alert();
+    setdDisabled(false);
+  }
+};
+
+
+
+
+
+
+
+
+
+  //-----------SIGN UP through Firebase - Not FireStone 
+  // const postData = async (e) => {
+  //   e.preventDefault();
+  //   setdDisabled(true);
+  //   const { name, email, password, cpassword } = user;
+
+  //   if (name && email && password && cpassword) {
+  //     if (password === cpassword) {
+  //       const res = await fetch(`${FIREBASE_API}/reactform.json`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           name,
+  //           email,
+  //           password,
+  //           cpassword,
+  //         }),
+  //       });
+
+  //       if (res) {
+  //         // setUser({
+  //         //   name: "",
+  //         //   email: "",
+  //         //   password: "",
+  //         //   cpassword: "",
+  //         // });
+  //         toastSuccess("User Registered");
+
+  //         setTimeout(() => {
+  //           navigate("/");
+  //         }, 2300);
+  //         // alert("Data Stored");
+  //         setdDisabled(false);
+  //       }
+  //     } else {
+  //       toastWarning("Passwords are not same ");
+  //       // alert("Password not same ");
+  //       setUser({
+  //         password: "",
+  //         cpassword: "",
+  //       });
+  //       setdDisabled(false);
+  //     }
+  //   } else {
+  //     toastError("Filled All fields");
+  //     // alert();
+  //     setdDisabled(false);
+  //   }
+  // };
 
   return (
     <>

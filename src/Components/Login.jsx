@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "./firebase";
 import { uid } from "uid";
 import { set, get, ref, onValue } from "firebase/database";
+import {addDoc, collection, getDocs} from 'firebase/firestore'
 
 import {
   MDBBtn,
@@ -26,6 +27,8 @@ import {
 import FIREBASE_API from "./API/Api";
 
 function Form() {
+  const userCollextionRef = collection(db, "user");
+
     const navigate = useNavigate();
   const [disabled, setdDisabled] = useState(false);
   const [user, setUser] = useState({
@@ -44,24 +47,25 @@ function Form() {
   const postData = async (e) => {
     e.preventDefault();
 
-    setdDisabled(true);
+    // setdDisabled(true);
     const { email, password } = user;
-
+    // console.log(user)
 
     if (email && password) {
-      const response = await fetch(`${FIREBASE_API}/reactform.json`);
-      console.log(`response `,response)
-      const allData = await response.json();
-      console.log(allData)
-      const result = Object.keys(allData).filter(
-        (item) => allData[item].email == email && item
-      )
-      console.log(result)
-      if (result.length != 0) {
-        if (allData[result[0]].password == password) {
-          console.log(`Logged IN `, allData[result[0]]);
+      const data = await getDocs(userCollextionRef);
+      const userData = data.docs.map((doc) => ({ ...doc.data().user, id: doc.id }));
+     
+      const found = userData.filter((em) =>{
+        if (em.email=== email) {
+          return em
+        }
+      })
+      
+      if (found.length != 0) {
+        if (found[0].password == password) {
+          console.log(`Logged IN `, found[0]);
 
-          toastSuccess(`${allData[result[0]].name} Logged In`);
+          toastSuccess(`${found[0].name} Logged In`);
 
           setTimeout(() => {
             navigate("/home");
@@ -73,10 +77,53 @@ function Form() {
       else{
         toastError("Data Not Found");
       }
-    } else {
+
+    }
+    
+    else {
       toastError("Filled All fields");
     }
   };
+
+
+
+
+  // const postData = async (e) => {
+  //   e.preventDefault();
+
+  //   setdDisabled(true);
+  //   const { email, password } = user;
+
+
+  //   if (email && password) {
+  //     const response = await fetch(`${FIREBASE_API}/reactform.json`);
+  //     console.log(`response `,response)
+  //     const allData = await response.json();
+  //     console.log(allData)
+  //     const result = Object.keys(allData).filter(
+  //       (item) => allData[item].email == email && item
+  //     )
+  //     console.log(result)
+  //     if (result.length != 0) {
+  //       if (allData[result[0]].password == password) {
+  //         console.log(`Logged IN `, allData[result[0]]);
+
+  //         toastSuccess(`${allData[result[0]].name} Logged In`);
+
+  //         setTimeout(() => {
+  //           navigate("/home");
+  //         }, 2300);
+  //       } else {
+  //         toastError("Incorrect Password");
+  //       }
+  //     }
+  //     else{
+  //       toastError("Data Not Found");
+  //     }
+  //   } else {
+  //     toastError("Filled All fields");
+  //   }
+  // };
 
   return (
     <>

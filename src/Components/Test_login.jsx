@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 // import { useNavigate } from "react-router-dom";
-import {db} from './firebase'
-import {addDoc, collection, getDocs} from 'firebase/firestore'
+import { db } from "./firebase";
+// import {addDoc, collection, getDocs} from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  getDocs,
+  getDoc,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 
 import {
   MDBBtn,
@@ -25,9 +34,10 @@ import {
 import FIREBASE_API from "./API/Api";
 
 function Form() {
-    // const navigate = useNavigate();
-    const userCollextionRef = collection(db , "user")
+  // const navigate = useNavigate();
+  const userCollextionRef = collection(db, "user");
 
+  const [getData, setGetdata] = useState([]);
   const [disabled, setdDisabled] = useState(false);
   const [user, setUser] = useState({
     email: "",
@@ -45,20 +55,40 @@ function Form() {
   const postData = async (e) => {
     e.preventDefault();
 
-    setdDisabled(true);
+    // setdDisabled(true);
     const { email, password } = user;
-
+    // console.log(user)
 
     if (email && password) {
-    // const data = await getDocs(userCollextionRef);
-    //   const userData = data.docs.map((doc)=>({...doc.data().user,   id: doc.id}));
-    //     console.log(userData.email)
-
-
-
-
+      const data = await getDocs(userCollextionRef);
+      const userData = data.docs.map((doc) => ({ ...doc.data().user, id: doc.id }));
+     
+      const found = userData.filter((em) =>{
+        if (em.email=== email) {
+          return em
+        }
+      })
       
-    } else {
+      if (found.length != 0) {
+        if (found[0].password == password) {
+          console.log(`Logged IN `, found[0]);
+
+          toastSuccess(`${found[0].name} Logged In`);
+
+          setTimeout(() => {
+            // navigate("/home");
+          }, 2300);
+        } else {
+          toastError("Incorrect Password");
+        }
+      }
+      else{
+        toastError("Data Not Found");
+      }
+
+    }
+    
+    else {
       toastError("Filled All fields");
     }
   };
