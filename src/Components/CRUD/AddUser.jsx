@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { confirm } from "react-confirm-box";
 import Index from "./table/Index";
-import {db} from '../firebase';
+import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 import { addDoc, collection, deleteDoc, setDoc, doc } from "firebase/firestore";
-import { MDBBtn } from 'mdb-react-ui-kit';
+import { MDBBtn } from "mdb-react-ui-kit";
 
 import { ToastContainer } from "react-toastify";
 import {
@@ -14,8 +14,7 @@ import {
   toastWarning,
   toastInformation,
   toastDark,
-} from "../Toast"
-
+} from "../Toast";
 
 function AddUser() {
   const navigate = useNavigate();
@@ -44,12 +43,10 @@ function AddUser() {
     const detail = await addDoc(userCollextionRef, data);
     // setData(defaultValue)
     toastSuccess(`Record Entered`);
-   
+
     setTimeout(() => {
       window.location.reload(false);
     }, 2300);
-
-
 
     // console.log(detail)
     let checkList = users.find((found) => {
@@ -95,9 +92,8 @@ function AddUser() {
     // setUpdateCheck("Add");
     // setData(defaultValue);
 
-
     const docRef = doc(db, "data", data.id);
-    console.log(docRef)
+    console.log(docRef);
     setDoc(docRef, data)
       .then((docRef) => {
         toastSuccess(`Record Update`);
@@ -107,7 +103,6 @@ function AddUser() {
           navigate("/home");
           window.location.reload(false);
         }, 2300);
-
       })
       .catch((error) => {
         console.log(error);
@@ -117,54 +112,34 @@ function AddUser() {
 
   const deleteCallback = async (idx) => {
     const delDecision = await confirm("Are you sure..");
-    console.log(idx)
-    
-    if (delDecision) {
+    console.log(idx);
 
+    if (delDecision) {
       const docRef = doc(db, "data", idx.id);
 
       deleteDoc(docRef)
-      .then(() => {
-        toastSuccess(`Record Deleted`);
-        setTimeout(() => {
-          navigate("/home");
-          window.location.reload(false);
-        }, 2300);
-      })
-      .catch(error => {
+        .then(() => {
+          toastSuccess(`Record Deleted`);
+          setTimeout(() => {
+            navigate("/home");
+            window.location.reload(false);
+          }, 2300);
+        })
+        .catch((error) => {
           console.log(error);
-      })
-
-
-
-
-      // const found = users.findIndex((user) => user.number == idx);
-      // console.log(found);
-      // users.splice(found, 1);
-      // setUsers([...users]);
+        });
     }
   };
-
-  // const userCollextionRef = collection(db , "data")
 
   const updateCallback = (user) => {
     console.log(user);
     setUpdateCheck("Update");
     // setId(user.number);
     setData(user);
-    
-   
-   
   };
 
-  
-  
-
-  
-
   return (
-    <div  className=' text-center bg-light'  >
-    
+    <div className=" text-center bg-light">
       <form
         onSubmit={(e) => {
           updateCheck == "Add" ? postdata(e) : updateData(e);
@@ -213,13 +188,13 @@ function AddUser() {
         ></input>
         <br></br>
         <br></br>
-        <MDBBtn id="add" type="submit">   {updateCheck}</MDBBtn>
-        {/* <button className="button-2" id="add" type="submit"  >
+        <MDBBtn id="add" type="submit">
+          {" "}
           {updateCheck}
-        </button> */}
+        </MDBBtn>
       </form>
       <div className="adjustment">
-        <table className="styled-table">
+        <table className="styled-table ">
           <Index
             users={users}
             deleteCallback={deleteCallback}
