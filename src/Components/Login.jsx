@@ -25,6 +25,7 @@ import {
   toastDark,
 } from "./Toast";
 import FIREBASE_API from "./API/Api";
+import Protected from "./Protected";
 
 function Form() {
   const userCollextionRef = collection(db, "user");
@@ -64,9 +65,8 @@ function Form() {
       if (found.length != 0) {
         if (found[0].password == password) {
           console.log(`Logged IN `, found[0]);
-
           toastSuccess(`${found[0].name} Logged In`);
-
+          
           setTimeout(() => {
             navigate("/home");
           }, 2300);
