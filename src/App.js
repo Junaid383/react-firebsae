@@ -17,12 +17,14 @@ function App() {
           <Route exact path="/home" element={<Crud />} />
         </Routes>
       </Router>
+    
+     
+     {/* For testing purpose  */}
+     
       {/* <Crud/> */}
-
       {/* <Form /> */}
       {/* <Test /> */}
       {/* <Test_login /> */}
-
       {/* <Login /> */}
     </>
   );
