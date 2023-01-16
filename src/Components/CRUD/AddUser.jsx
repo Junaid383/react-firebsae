@@ -89,8 +89,6 @@ function AddUser() {
     const index = users.findIndex((user) => user.number == id);
     users[index] = data;
     setUsers(users);
-    // setUpdateCheck("Add");
-    // setData(defaultValue);
 
     const docRef = doc(db, "data", data.id);
     console.log(docRef);
@@ -189,7 +187,6 @@ function AddUser() {
         <br></br>
         <br></br>
         <MDBBtn id="add" type="submit">
-          {" "}
           {updateCheck}
         </MDBBtn>
       </form>
