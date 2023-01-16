@@ -17,10 +17,8 @@ function App() {
           <Route exact path="/" element={<Login />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Form />} />
-          <Route exact path="/home" element={<Crud />} />
           <Route path="*" element={<Page_error />} />
-
-          {/* <Route exact path="/home" element={<Protected component={Crud}/>} /> */}
+          <Route exact path="/home" element={<Crud />} />
         </Routes>
       </Router>
 

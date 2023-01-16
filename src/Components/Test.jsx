@@ -1,9 +1,7 @@
-import React, { useState  , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
-import {db} from './firebase'
-import {addDoc, collection, getDocs} from 'firebase/firestore'
-// import * as firebase from 'firebase'
+import { db } from "./firebase";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 import {
   MDBBtn,
@@ -26,9 +24,8 @@ import {
 import FIREBASE_API from "./API/Api";
 
 function Form() {
-    const userCollextionRef = collection(db , "user")
+  const userCollextionRef = collection(db, "user");
 
-//   const navigate = useNavigate();
 
   const [disabled, setdDisabled] = useState(false);
   const [user, setUser] = useState({
@@ -53,7 +50,7 @@ function Form() {
 
     if (name && email && password && cpassword) {
       if (password === cpassword) {
-       let res =  await addDoc(userCollextionRef, {user})
+        let res = await addDoc(userCollextionRef, { user });
 
         if (res) {
           toastSuccess("User Registered");
@@ -63,7 +60,6 @@ function Form() {
             password: "",
             cpassword: "",
           });
-         
 
           setTimeout(() => {
             // navigate("/");
@@ -87,28 +83,19 @@ function Form() {
     }
   };
 
-  useEffect(()=>{
-    const getUser = async()=>{
+  useEffect(() => {
+    const getUser = async () => {
       const data = await getDocs(userCollextionRef);
-    //   console.log(`data `, data.docs.map((doc,index)=> doc.data))
-    // firebase
-    // .firestore()
-    // .collection("user")
-    // .where("email", "==", `mywyk@mailinator.com`).get().then(result=>{
-    //     console.log(`sig-----------------`,result)
-    // });
-      const userData = data.docs.map((doc)=>({...doc.data().user,   id: doc.id}));
-    //   console.log(userData)
-
-    data.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
+      const userData = data.docs.map((doc) => ({
+        ...doc.data().user,
+        id: doc.id,
+      }));
+      data.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
       });
-      
-
     };
     getUser();
-  },[]);
+  }, []);
 
   return (
     <>

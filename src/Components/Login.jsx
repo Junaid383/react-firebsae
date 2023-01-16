@@ -85,46 +85,6 @@ function Form() {
     }
   };
 
-
-
-
-  // const postData = async (e) => {
-  //   e.preventDefault();
-
-  //   setdDisabled(true);
-  //   const { email, password } = user;
-
-
-  //   if (email && password) {
-  //     const response = await fetch(`${FIREBASE_API}/reactform.json`);
-  //     console.log(`response `,response)
-  //     const allData = await response.json();
-  //     console.log(allData)
-  //     const result = Object.keys(allData).filter(
-  //       (item) => allData[item].email == email && item
-  //     )
-  //     console.log(result)
-  //     if (result.length != 0) {
-  //       if (allData[result[0]].password == password) {
-  //         console.log(`Logged IN `, allData[result[0]]);
-
-  //         toastSuccess(`${allData[result[0]].name} Logged In`);
-
-  //         setTimeout(() => {
-  //           navigate("/home");
-  //         }, 2300);
-  //       } else {
-  //         toastError("Incorrect Password");
-  //       }
-  //     }
-  //     else{
-  //       toastError("Data Not Found");
-  //     }
-  //   } else {
-  //     toastError("Filled All fields");
-  //   }
-  // };
-
   return (
     <>
       <MDBContainer fluid>
